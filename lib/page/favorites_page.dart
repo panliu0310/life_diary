@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:life_diary/main.dart';
 import 'package:provider/provider.dart';
+
+import '../my_app_state.dart';
 
 class FavoritesPage extends StatelessWidget {
   @override

@@ -12,7 +12,20 @@
           "package_name": "com.example.life_diary"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "893498280126-o2vl3i9vfp8na4icp1nto6k03d3mgc4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.life_diary",
+            "certificate_hash": "9e4a1b07d70b858b4b0730267025ddc9f8cd74c2"
+          }
+        },
+        {
+          "client_id": "893498280126-rrvfa87s7ojf1vhjkut5e9jn9qkqbrgo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAGxRg0b3cPpJbTouoy9aUk7hbX2mROX0I"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "893498280126-rrvfa87s7ojf1vhjkut5e9jn9qkqbrgo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "893498280126-e638nua0lmmlvb0tanhhf35as8ibabdb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lifeDiary"
+              }
+            }
+          ]
         }
       }
     }
