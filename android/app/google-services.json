@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "893498280126",
+    "project_id": "lifediary-8badd",
+    "storage_bucket": "lifediary-8badd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893498280126:android:1d4581b67c118d84db76ef",
+        "android_client_info": {
+          "package_name": "com.example.life_diary"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGxRg0b3cPpJbTouoy9aUk7hbX2mROX0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
