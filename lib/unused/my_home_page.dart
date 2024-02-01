@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 //import 'package:life_diary/main.dart';
 
-import 'content_page.dart';
-import 'favorites_page.dart';
+import '../page/content_page.dart';
+import '../page/favorites_page.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
