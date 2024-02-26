@@ -5,9 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-class MyAppState extends ChangeNotifier {
-  MyAppState() {
-    signInWithGoogle();
+class OldMyAppState extends ChangeNotifier {
+  OldMyAppState() {
+    //signInWithGoogle();
   }
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
