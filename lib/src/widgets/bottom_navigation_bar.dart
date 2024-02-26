@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-//import '../../unused/my_home_page.dart';
-import '../../page/content_page.dart';
-import '../../page/favorites_page.dart';
 import '../../page/personal_page.dart';
+import '../../page/story_page.dart';
+import '../../page/setting_page.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   const MyBottomNavigationBar({super.key});
@@ -16,9 +15,9 @@ class _MyBottomNavigationBarState
     extends State<MyBottomNavigationBar> {
   int _selectedIndex = 0;
   List<StatelessWidget> _widgetOptions = [
-    ContentPage(),
-    FavoritesPage(),
-    PersonalPage()
+    StoryPage(),
+    PersonalPage(),
+    SettingPage()
   ];
 
   void _onItemTapped(int index) {
@@ -32,7 +31,7 @@ class _MyBottomNavigationBarState
     return Scaffold(
       appBar: AppBar(
         title: const Text('BottomNavigationBar Sample'),
-        backgroundColor: Colors.yellow,
+        backgroundColor: Colors.lightBlue,
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -40,19 +39,20 @@ class _MyBottomNavigationBarState
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favourite',
+            icon: Icon(Icons.book),
+            label: 'Story',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Personal',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
         ],
         currentIndex: _selectedIndex,
+        unselectedItemColor: Colors.black,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
