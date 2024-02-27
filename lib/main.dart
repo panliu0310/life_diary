@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:life_diary/page/login_page.dart';
+import 'package:life_diary/src/auth/auth_gate.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'src/auth/firebase_options.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
       ),
-      home: LoginPage(),
+      home: AuthGate(),
     );
   }
 }
