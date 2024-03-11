@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../page/personal_page.dart';
+import '../../page/profile_page.dart';
 import '../../page/story_page.dart';
 import '../../page/setting_page.dart';
 
@@ -14,9 +14,9 @@ class MyBottomNavigationBar extends StatefulWidget {
 class _MyBottomNavigationBarState
     extends State<MyBottomNavigationBar> {
   int _selectedIndex = 0;
-  List<StatelessWidget> _widgetOptions = [
+  List<Widget> _widgetOptions = [
     StoryPage(),
-    PersonalPage(),
+    ProfilePage(),
     SettingPage()
   ];
 
@@ -29,10 +29,10 @@ class _MyBottomNavigationBarState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: const Text('BottomNavigationBar Sample'),
         backgroundColor: Colors.lightBlue,
-      ),
+      ),*/
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -44,7 +44,7 @@ class _MyBottomNavigationBarState
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Personal',
+            label: 'Profile',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
