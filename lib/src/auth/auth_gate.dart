@@ -7,6 +7,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:life_diary/src/schema/users.dart';
 //import 'package:life_diary/src/widgets/google_provider_button.dart';
 import 'package:life_diary/utils/constant.dart';
+import 'package:life_diary/utils/utility.dart';
 
 import '../widgets/bottom_navigation_bar.dart';
 
@@ -15,13 +16,13 @@ class AuthGate extends StatelessWidget {
 
   Future<void> signInHandle(User firebaseAuthInstanceUser)
   async {
-    bool bNotExist = await retrieveUserCollection(firebaseAuthInstanceUser) == null;
+    bool bNotExist = await UserUtil.retrieveUserCollection(firebaseAuthInstanceUser) == null;
     if (bNotExist) {
-      createUserCollection(firebaseAuthInstanceUser);
+      UserUtil.createUserCollection(firebaseAuthInstanceUser);
     }
   }
 
-  Future<void> createUserCollection(User firebaseAuthInstanceUser)
+  /*Future<void> createUserCollection(User firebaseAuthInstanceUser)
   async {
     var db = FirebaseFirestore.instance;
 
@@ -56,7 +57,7 @@ class AuthGate extends StatelessWidget {
     } else {
       return null;
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
