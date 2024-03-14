@@ -7,10 +7,10 @@ class Users {
   final List<String>? diaryId;
 
   Users({
-    this.id,
-    this.username,
-    this.email,
-    this.diaryId,
+    required this.id,
+    required this.username,
+    required this.email,
+    required this.diaryId,
   });
 
   factory Users.fromFirestore(
