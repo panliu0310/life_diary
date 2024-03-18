@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:life_diary/utils/database_service.dart';
+import 'package:life_diary/src/schema/users.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -8,8 +11,30 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  DatabaseService service = DatabaseService();
+  Future<Users>? currentUser;
+  Users? retrievedUser;
+
+  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+  @override
+  void initState() {
+    super.initState();
+    _initRetrieval();
+  }
+
+  Future<void> _initRetrieval() async {
+    currentUser = service.retrieveUsers(currentUserId);
+    retrievedUser = await service.retrieveUsers(currentUserId);
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    
+    //int diaryLength = currentUser.diaryId!.length;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -46,31 +71,61 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
           Padding(
-            padding: EdgeInsets.only(left: 35),
-            child: Column(
+            padding: EdgeInsets.only(left: 35, bottom: 5.0),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-               
+              children: <Widget>[
+               Text("test"),
+               SizedBox(width: 50),
+               Text("test"),
+               SizedBox(width: 50),
+               Text("test"),
               ],
             ),
           ),
 
 // UI reference: https://stackoverflow.com/questions/58117777/how-to-add-vertical-and-horizontal-line-around-flutter-grid-view
           Expanded(
-            child: GridView.builder(
-              //physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisSpacing: 2,
-                mainAxisSpacing: 2,
-                crossAxisCount: 3,
-              ),
-              itemCount: 100,
-              itemBuilder: (context, index) {
-                return Container(color: Colors.black);
-              }
+            child: FutureBuilder(
+              future: currentUser,
+              builder:
+                (BuildContext context, AsyncSnapshot<Users> snapshot) {
+                  if (snapshot.hasData && retrievedUser!.diaryId!.isNotEmpty){
+                    return GridView.builder(
+                      //physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 2,
+                        crossAxisCount: 3,
+                      ),
+                      itemCount: retrievedUser!.diaryId!.length,
+                      itemBuilder: (context, index) {
+                        return Container(color: Colors.black);
+                      }
+                    );
+                  }
+                  else if (snapshot.connectionState == ConnectionState.done && snapshot.hasData &&
+                    retrievedUser!.diaryId!.isEmpty) {
+                    return GridView.builder(
+                      //physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 2,
+                        crossAxisCount: 3,
+                      ),
+                      itemCount: 100,
+                      itemBuilder: (context, index) {
+                        return Container(color: Colors.black);
+                      }
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }
             )
-          ),
+          )
         ],
       ),
     );
