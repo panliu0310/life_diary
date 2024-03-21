@@ -1,4 +1,5 @@
 // retrieve data from firebase and store in initial state
+// first refernce, from FlutterFire doc: https://firebase.google.com/docs/firestore/query-data/get-data
 // reference: https://petercoding.com/firebase/2022/02/16/how-to-model-your-firebase-data-class-in-flutter/
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,19 +21,18 @@ class DatabaseService {
     await docRef.set(usersData);
   }
 
-  Future<Users> retrieveUsers(String uid) async {
+  Future<Users?> retrieveUsers(String uid) async {
     final ref = _db.collection("users").doc(uid).withConverter(
       fromFirestore: Users.fromFirestore,
       toFirestore: (Users users, _) => users.toFirestore(),
     );
     final docSnap = await ref.get();
     final user = docSnap.data(); // Convert to Users object
-    return user!;
-    // if (user != null) {
-    //   return user;
-    // } else {
-    //   return null;
-    // }
+    if (user != null) {
+      return user;
+    } else {
+      return null;
+    }
   }
 
   Future<void> createDiary(Diary diaryData)

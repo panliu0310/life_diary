@@ -13,7 +13,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
 
   DatabaseService service = DatabaseService();
-  Future<Users>? currentUser;
+  Future<Users?>? currentUser;
   Users? retrievedUser;
 
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -89,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: FutureBuilder(
               future: currentUser,
               builder:
-                (BuildContext context, AsyncSnapshot<Users> snapshot) {
+                (BuildContext context, AsyncSnapshot<Users?> snapshot) {
                   if (snapshot.hasData && retrievedUser!.diaryId!.isNotEmpty){
                     return GridView.builder(
                       //physics: NeverScrollableScrollPhysics(),
