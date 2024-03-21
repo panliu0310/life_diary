@@ -53,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: EdgeInsets.only(left: 25.0, top: 25.0, bottom: 25.0),
                 child: CircleAvatar(
                   radius: 40,
-                  backgroundImage: AssetImage('assets/images/1.jpg'),
+                  backgroundImage: AssetImage('assets/images/user.png'),
                 )
               ),
               Padding(
@@ -61,8 +61,34 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("username"),
-                    Text("email")
+                    FutureBuilder(
+                      future: currentUser,
+                      builder:
+                        (BuildContext context, AsyncSnapshot<Users?> snapshot) {
+                          if (snapshot.hasData)
+                          {
+                            return Text(retrievedUser!.username!);
+                          }
+                          else
+                          {
+                            return Text("");
+                          }
+                        }
+                    ),
+                    FutureBuilder(
+                      future: currentUser,
+                      builder:
+                        (BuildContext context, AsyncSnapshot<Users?> snapshot) {
+                          if (snapshot.hasData)
+                          {
+                            return Text(retrievedUser!.email!);
+                          }
+                          else
+                          {
+                            return Text("");
+                          }
+                        }
+                    )
                   ],
                 ),
               ),
