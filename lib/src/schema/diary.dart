@@ -4,15 +4,17 @@ class Diary {
   final String? id;
   final String? userId;
   final DateTime? time;
+  final String? category;
   final String? title;
   final String? content;
 
   Diary({
-    this.id,
-    this.userId,
-    this.time,
-    this.title,
-    this.content,
+    required this.id,
+    required this.userId,
+    required this.time,
+    required this.category,
+    required this.title,
+    required this.content,
   });
 
   factory Diary.fromFirestore(
@@ -24,6 +26,7 @@ class Diary {
       id: data?['id'],
       userId: data?['userId'],
       time: data?['time'],
+      category: data?['category'],
       title: data?['title'],
       content: data?['content'],
     );

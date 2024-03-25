@@ -96,19 +96,90 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
 
+// row scroll reference: https://stackoverflow.com/questions/46222788/how-to-create-a-row-of-scrollable-text-boxes-or-widgets-in-flutter-inside-a-list
+          SizedBox(
+            child:
+              SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child:
+                    FutureBuilder(
+                      future: currentUser,
+                      builder:
+                        (BuildContext context, AsyncSnapshot<Users?> snapshot) {
+                          if (snapshot.hasData)
+                          {
+                            return ListView.builder(
+                              //physics: NeverScrollableScrollPhysics(),
+                              //itemExtent: 20,
+                              itemExtent: 100.0,
+                              padding: EdgeInsets.all(5.0),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: retrievedUser!.diaryCategory!.length + 2,
+                              itemBuilder: (context, index) {
+                                if (index == 0)
+                                {
+                                  // first item would be "all"
+                                  return TextButton.icon(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.black,
+                                            backgroundColor: Colors.lightBlue,
+                                            textStyle: const TextStyle(fontSize: 20),
+                                          ),
+                                          onPressed: (){
 
-          Padding(
-            padding: EdgeInsets.only(left: 35, bottom: 5.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-               Text("test"),
-               SizedBox(width: 50),
-               Text("test"),
-               SizedBox(width: 50),
-               Text("test"),
-              ],
-            ),
+                                          },
+                                          icon: Image.asset('assets/images/diary.png',width: 20),
+                                          label: Text("所有"),
+                                        );
+                                }
+                                else if (index == retrievedUser!.diaryCategory!.length + 1)
+                                {
+                                  return TextButton.icon(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.black,
+                                            backgroundColor: Colors.lightBlue,
+                                            textStyle: const TextStyle(fontSize: 20),
+                                          ),
+                                          onPressed: (){
+
+                                          },
+                                          icon: Image.asset('assets/images/diary.png',width: 20),
+                                          label: Text("增加"),
+                                        );
+                                }
+                                else {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+  // text button reference: https://api.flutter.dev/flutter/material/TextButton-class.html
+                                      TextButton.icon(
+                                        style: TextButton.styleFrom(
+                                          foregroundColor: Colors.black,
+                                          backgroundColor: Colors.lightBlue,
+                                          textStyle: const TextStyle(fontSize: 20),
+                                        ),
+                                        onPressed: (){
+
+                                        },
+                                        icon: Image.asset('assets/images/diary.png',width: 20),
+                                        label: Text(retrievedUser!.diaryCategory![index - 1]),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              }
+                          );
+                          }
+                          else
+                          {
+                            return Text("");
+                          }
+                        }
+                    ),
+                ),
+              ),
           ),
 
 // UI reference: https://stackoverflow.com/questions/58117777/how-to-add-vertical-and-horizontal-line-around-flutter-grid-view
