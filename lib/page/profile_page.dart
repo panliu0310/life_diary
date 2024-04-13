@@ -116,55 +116,88 @@ class _ProfilePageState extends State<ProfilePage> {
                               itemExtent: 100.0,
                               padding: EdgeInsets.all(5.0),
                               scrollDirection: Axis.horizontal,
-                              itemCount: retrievedUser!.diaryCategory!.length + 2,
+                              itemCount: retrievedUser!.diaryCategory!.length + 1,
                               itemBuilder: (context, index) {
-                                if (index == 0)
-                                {
-                                  // first item would be "all"
-                                  return TextButton.icon(
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.black,
-                                            backgroundColor: Colors.lightBlue,
-                                            textStyle: const TextStyle(fontSize: 20),
-                                          ),
-                                          onPressed: (){
+                                // if (index == 0)
+                                // {
+                                //   // first item would be "all"
+                                //   return Row(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       TextButton.icon(
+                                //         style: TextButton.styleFrom(
+                                //           foregroundColor: Colors.black,
+                                //           backgroundColor: Colors.lightBlue,
+                                //           textStyle: const TextStyle(fontSize: 16.0),
+                                //         ),
+                                //         onPressed: (){
 
-                                          },
-                                          icon: Image.asset('assets/images/diary.png',width: 20),
-                                          label: Text("所有"),
-                                        );
-                                }
-                                else if (index == retrievedUser!.diaryCategory!.length + 1)
+                                //         },
+                                //         icon: Image.asset('assets/images/diary.png', width: 20.0),
+                                //         label: Text("所有"),
+                                //       )
+                                //     ]
+                                //   );
+                                // }
+                                // else 
+                                if (index == retrievedUser!.diaryCategory!.length)
                                 {
-                                  return TextButton.icon(
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.black,
-                                            backgroundColor: Colors.lightBlue,
-                                            textStyle: const TextStyle(fontSize: 20),
+                                  // last item would be "add"
+                                  return Row(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+//                                       TextButton.icon(
+//                                         style: TextButton.styleFrom(
+//                                             foregroundColor: Colors.black,
+//                                             backgroundColor: Colors.lightBlue,
+//                                             textStyle: const TextStyle(fontSize: 16.0),
+//                                             shape: RoundedRectangleBorder(
+//                                               borderRadius: BorderRadius.circular(5),
+//                                             ),
+//                                           ),
+//                                         onPressed: (){
+                                          
+//                                         },
+// // flutter icon list: https://www.fluttericon.cn/
+//                                         icon: Icon(Icons.add),
+//                                         label: Text("test"),
+//                                       )
+                                      IconButton(
+                                        onPressed: (){
+                                          
+                                        },
+                                        icon: Icon(Icons.add),
+                                        style: IconButton.styleFrom(
+                                          foregroundColor: Colors.black,
+                                          backgroundColor: Colors.lightBlue,
+                                          //textStyle: const TextStyle(fontSize: 16.0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
                                           ),
-                                          onPressed: (){
-
-                                          },
-                                          icon: Image.asset('assets/images/diary.png',width: 20),
-                                          label: Text("增加"),
-                                        );
+                                        ),
+                                      )
+                                    ]
+                                  );
                                 }
                                 else {
+                                  // middle items in database
                                   return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
   // text button reference: https://api.flutter.dev/flutter/material/TextButton-class.html
                                       TextButton.icon(
                                         style: TextButton.styleFrom(
                                           foregroundColor: Colors.black,
                                           backgroundColor: Colors.lightBlue,
-                                          textStyle: const TextStyle(fontSize: 20),
+                                          textStyle: const TextStyle(fontSize: 16.0),
                                         ),
                                         onPressed: (){
 
                                         },
-                                        icon: Image.asset('assets/images/diary.png',width: 20),
-                                        label: Text(retrievedUser!.diaryCategory![index - 1]),
+                                        icon: Image.asset('assets/images/diary.png', width: 20.0),
+                                        label: Text(retrievedUser!.diaryCategory![index]),
                                       ),
                                     ],
                                   );
