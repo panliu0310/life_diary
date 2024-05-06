@@ -254,7 +254,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             print("test");
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CreateDiaryPage()),
+                              MaterialPageRoute(builder: (context) => CreateDiaryPage(user: retrievedUser!)),
                             );
                           },
                           child: Ink(

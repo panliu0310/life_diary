@@ -22,7 +22,7 @@ class AuthGate extends StatelessWidget {
           id: firebaseAuthInstanceUser.uid,
           username: firebaseAuthInstanceUser.displayName,
           email: firebaseAuthInstanceUser.email,
-          diaryCategory: ['學', '業', '情'],
+          diaryCategory: ['學', '職', '情'],
           diaryId: [])
       );
     }
