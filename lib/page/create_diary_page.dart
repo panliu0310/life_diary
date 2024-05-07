@@ -1,5 +1,6 @@
 // route reference: https://docs.flutter.dev/cookbook/navigation/navigation-basics
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:life_diary/src/schema/users.dart';
 import 'package:life_diary/utils/database_service.dart';
 
@@ -15,6 +16,7 @@ class CreateDiaryPage extends StatefulWidget
 class _CreateDiaryPageState extends State<CreateDiaryPage>{
 
   DatabaseService service = DatabaseService();
+  DateTime dateTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +39,41 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
 // UI reference on text field: https://stackoverflow.com/questions/50400529/how-to-change-textfields-height-and-width
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        isDense: true, // set isDense to true to solve inner margin problem
-                        border: OutlineInputBorder(),
-                        labelText: 'Date',
-                        contentPadding: EdgeInsets.all(8),
-                      ),
-                    ),
+                    child: Row(
+                      children: [
+                        IconButton(
+// DateTime reference: https://api.flutter.dev/flutter/material/showDatePicker.html
+                          onPressed: () async{
+                            final result = await showDatePicker(
+                              context: context,
+                              initialDate: dateTime,
+                              firstDate: DateTime(1950, 01),
+                              lastDate: DateTime.now()
+                            );
+                            setState(() {
+                              if (result != null) {
+                                dateTime = result;
+                              }
+                            });
+                          },
+                          icon: Icon(Icons.calendar_today),
+                          style: IconButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.lightBlue,
+                            //textStyle: const TextStyle(fontSize: 16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          DateFormat('yyyy-MM-dd').format(dateTime),
+                          style: TextStyle(fontSize: 20.0, color: Colors.black),
+                        ),
+                      ],
+                    )
                   ),
+                  
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     child: TextFormField(
