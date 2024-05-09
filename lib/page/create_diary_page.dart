@@ -18,8 +18,17 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
   DatabaseService service = DatabaseService();
   DateTime dateTime = DateTime.now();
 
+  List<String> categoryList = [];
+  String? currentCategory = "";
+
   @override
   Widget build(BuildContext context) {
+
+    if (widget.user.diaryCategory != null)
+    {
+      categoryList = List.from(widget.user.diaryCategory as Iterable);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Diary page'),
@@ -87,14 +96,41 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                    child: TextFormField(
-                      decoration: InputDecoration(
+// DropdownMenu reference: https://api.flutter.dev/flutter/material/DropdownMenu-class.html
+                    child: DropdownMenu<String>(
+                      initialSelection: categoryList.first,
+                      label: const Text('Category'),
+                      
+                      //menuMaxHeight: 10,
+                      onSelected: (String? category) {
+                        setState(() {
+                          currentCategory = category;
+                        });
+                      },
+                      dropdownMenuEntries: categoryList
+                          .map<DropdownMenuEntry<String>>(
+                              (String item) {
+                        return DropdownMenuEntry<String>(
+                          value: item,
+                          label: item,
+                          //enabled: color.label != 'Grey',
+                          style: MenuItemButton.styleFrom(
+                            foregroundColor: Colors.black,
+                          ),
+                        );
+                      }).toList(),
+// reference for smaller DropDownMenu: https://stackoverflow.com/questions/77173999/make-flutter-dropdownmenu-smaller
+                      inputDecorationTheme: InputDecorationTheme(
                         isDense: true,
-                        border: OutlineInputBorder(),
-                        labelText: 'Category',
-                        contentPadding: EdgeInsets.all(8),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                        constraints: BoxConstraints.tight(
+                          const Size.fromHeight(40)
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                    ),
+                    )
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
