@@ -1,13 +1,14 @@
 // route reference: https://docs.flutter.dev/cookbook/navigation/navigation-basics
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:life_diary/src/schema/diary.dart';
 import 'package:life_diary/src/schema/users.dart';
 import 'package:life_diary/utils/database_service.dart';
 
 class CreateDiaryPage extends StatefulWidget
 {
-  final Users user;
-  const CreateDiaryPage({super.key, required this.user});
+  final Users currentUser;
+  const CreateDiaryPage({super.key, required this.currentUser});
 
   @override
   State<CreateDiaryPage> createState() => _CreateDiaryPageState();
@@ -18,15 +19,19 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
   DatabaseService service = DatabaseService();
   DateTime dateTime = DateTime.now();
 
+  String currentTitle = "";
+
   List<String> categoryList = [];
   String? currentCategory = "";
+
+  String currentContent = "";
 
   @override
   Widget build(BuildContext context) {
 
-    if (widget.user.diaryCategory != null)
+    if (widget.currentUser.diaryCategory != null)
     {
-      categoryList = List.from(widget.user.diaryCategory as Iterable);
+      categoryList = List.from(widget.currentUser.diaryCategory as Iterable);
     }
 
     return Scaffold(
@@ -86,6 +91,9 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     child: TextFormField(
+                      onChanged: (text) {
+                        currentTitle = text;
+                      },
                       decoration: InputDecoration(
                         isDense: true,
                         border: OutlineInputBorder(),
@@ -94,6 +102,7 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
                       ),
                     ),
                   ),
+
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
 // DropdownMenu reference: https://api.flutter.dev/flutter/material/DropdownMenu-class.html
@@ -132,9 +141,13 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
                       ),
                     )
                   ),
+
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     child: TextFormField(
+                      onChanged: (text) {
+                        currentContent = text;
+                      },
                       keyboardType: TextInputType.multiline,
                       //validator: validateName,
 // reference of multi-line: https://stackoverflow.com/questions/45900387/multi-line-textfield-in-flutter
@@ -146,6 +159,61 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
                         labelText: 'Content',
                         contentPadding: EdgeInsets.all(8),
                       ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    child: TextButton(
+                      onPressed: () async {
+                        bool? bCreate = await showDialog<bool>(
+                          context: context,
+                          builder: (contextDialog) {
+// AlertDialog reference: https://book.flutterchina.club/chapter7/dailog.html#_7-7-1-%E4%BD%BF%E7%94%A8%E5%AF%B9%E8%AF%9D%E6%A1%86
+                            return AlertDialog(
+                              title: Text("提示"),
+                              content: Text("您確定要創建世記嗎?"),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text("取消"),
+                                  onPressed: () {
+                                    Navigator.of(contextDialog).pop(); // 关闭对话框
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text("創建"),
+                                  onPressed: () {
+                                    Navigator.of(contextDialog).pop(true); //关闭对话框并返回true
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                          }
+                        );
+
+                        if (bCreate == true)
+                        {
+                          service.createDiary(
+                            Diary(
+                              id: "${DateFormat('yyyyMMddHHmmss').format(dateTime)}-$currentTitle", 
+                              userId: widget.currentUser.id, 
+                              time: dateTime, 
+                              category: currentCategory, 
+                              title: currentTitle, 
+                              content: currentContent)
+                          );
+                        }
+                      },
+                      style: IconButton.styleFrom(
+                        foregroundColor: Colors.black,
+                        backgroundColor: Colors.lightBlue,
+                        //textStyle: const TextStyle(fontSize: 16.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ), 
+                      child: Text("提交!"),
                     ),
                   ),
                 ],

@@ -232,7 +232,21 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       itemCount: retrievedUser!.diaryId!.length,
                       itemBuilder: (context, index) {
-                        return Container(color: Colors.black);
+                        return InkWell(
+// click effect reference: https://stackoverflow.com/questions/43692923/flutter-container-onpressed
+                          onTap: (){
+                           
+                          },
+                          child: Ink(
+                            color: Colors.black,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                
+                              ],
+                            ),
+                          )
+                        );
                       }
                     );
                   }
@@ -254,7 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             print("test");
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CreateDiaryPage(user: retrievedUser!)),
+                              MaterialPageRoute(builder: (context) => CreateDiaryPage(currentUser: retrievedUser!)),
                             );
                           },
                           child: Ink(
