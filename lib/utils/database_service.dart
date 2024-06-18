@@ -48,6 +48,19 @@ class DatabaseService {
     _db.collection("users").doc(uid).update({"diaryCategory" : categories});
   }
 
+  Future<void> updateUsersAddDiaryId(String uid, String text) async
+  {
+    final ref = _db.collection("users").doc(uid).withConverter(
+      fromFirestore: Users.fromFirestore,
+      toFirestore: (Users users, _) => users.toFirestore(),
+    );
+    final docSnap = await ref.get();
+    final user = docSnap.data(); // Convert to Users object
+    List<String> diaryId = user!.diaryId!;
+    diaryId.add(text);
+    _db.collection("users").doc(uid).update({"diaryId" : diaryId});
+  }
+
   Future<void> createDiary(Diary diaryData)
   async {
     final docRef = _db

@@ -37,6 +37,7 @@ class Diary {
       if (id != null) "id": id,
       if (userId != null) "userId": userId,
       if (time != null) "time": time,
+      if (category != null) "category": category,
       if (title != null) "title": title,
       if (content != null) "content": content,
     };

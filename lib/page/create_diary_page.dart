@@ -194,15 +194,17 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
 
                         if (bCreate == true)
                         {
+                          String diaryId = "${DateFormat('yyyyMMddHHmmss').format(dateTime)}-$currentTitle";
                           service.createDiary(
                             Diary(
-                              id: "${DateFormat('yyyyMMddHHmmss').format(dateTime)}-$currentTitle", 
+                              id: diaryId, 
                               userId: widget.currentUser.id, 
                               time: dateTime, 
                               category: currentCategory, 
                               title: currentTitle, 
                               content: currentContent)
                           );
+                          service.updateUsersAddDiaryId(widget.currentUser.id!, diaryId);
                         }
                       },
                       style: IconButton.styleFrom(

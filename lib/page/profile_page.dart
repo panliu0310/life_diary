@@ -238,7 +238,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   future: currentUser,
                   builder:
                       (BuildContext context, AsyncSnapshot<Users?> snapshot) {
-                    if (snapshot.hasData &&
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData &&
                         retrievedUser!.diaryId!.isNotEmpty) {
                       return GridView.builder(
                           //physics: NeverScrollableScrollPhysics(),
