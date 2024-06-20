@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:life_diary/page/create_diary_page.dart';
+import 'package:life_diary/page/view_diary_page.dart';
 import 'package:life_diary/utils/database_service.dart';
 import 'package:life_diary/src/schema/users.dart';
 
@@ -254,7 +255,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           itemBuilder: (context, index) {
                             return InkWell(
 // click effect reference: https://stackoverflow.com/questions/43692923/flutter-container-onpressed
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ViewDiaryPage(
+                                            currentDiaryId: retrievedUser!.diaryId![index])),
+                                  );
+                                },
                                 child: Ink(
                                   color: Colors.black,
                                   child: Column(
