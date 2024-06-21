@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:life_diary/page/create_diary_page.dart';
 import 'package:life_diary/page/view_diary_page.dart';
+import 'package:life_diary/src/widgets/diary_preview.dart';
 import 'package:life_diary/utils/database_service.dart';
 import 'package:life_diary/src/schema/users.dart';
 
@@ -126,7 +127,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               //   );
                               // }
                               // else
-                              if (index == retrievedUser!.diaryCategory!.length) {
+                              if (index ==
+                                  retrievedUser!.diaryCategory!.length) {
                                 // last item would be "add"
                                 return Row(
                                     crossAxisAlignment:
@@ -157,29 +159,32 @@ class _ProfilePageState extends State<ProfilePage> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title:
-                                                  const Text('輸入新類別'),
+                                                title: const Text('輸入新類別'),
                                                 content: TextField(
                                                   decoration: InputDecoration(
-                                                    hintText: "輸入新類別以分類世記"
-                                                  ),
-                                                  onChanged: (text){
-                                                    alertDialogCategoryInput = text;
+                                                      hintText: "輸入新類別以分類世記"),
+                                                  onChanged: (text) {
+                                                    alertDialogCategoryInput =
+                                                        text;
                                                   },
                                                 ),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     child: const Text('Cancel'),
                                                     onPressed: () {
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                   ),
                                                   TextButton(
                                                     child: const Text('Submit'),
                                                     onPressed: () {
                                                       // Handle the submit action
-                                                      service.updateUsersAddCategory(currentUserId, alertDialogCategoryInput);
-                                                      Navigator.of(context).pop();
+                                                      service.updateUsersAddCategory(
+                                                          currentUserId,
+                                                          alertDialogCategoryInput);
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                   ),
                                                 ],
@@ -251,6 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             mainAxisSpacing: 2,
                             crossAxisCount: 3,
                           ),
+                          
                           itemCount: retrievedUser!.diaryId!.length,
                           itemBuilder: (context, index) {
                             return InkWell(
@@ -260,7 +266,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => ViewDiaryPage(
-                                            currentDiaryId: retrievedUser!.diaryId![index])),
+                                            currentDiaryId: retrievedUser!
+                                                .diaryId![index])),
                                   );
                                 },
                                 child: Ink(
@@ -268,7 +275,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: <Widget>[],
+                                    children: <Widget>[
+                                      SizedBox(
+// MediaQuery get device size: https://www.geeksforgeeks.org/flutter-set-custom-height-for-widget-in-gridview/
+                                        width: MediaQuery.of(context).size.width / 3,
+                                        height: (MediaQuery.of(context).size.width - 5/*buffer*/) / 3,
+                                        child: DiaryPreview(
+                                            diaryId:
+                                                retrievedUser!.diaryId![index]),
+                                      )
+                                    ],
                                   ),
                                 ));
                           });
