@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:life_diary/src/schema/diary.dart';
 import 'package:life_diary/src/schema/users.dart';
+import 'package:life_diary/src/widgets/bottom_navigation_bar.dart';
 import 'package:life_diary/utils/database_service.dart';
 
 class CreateDiaryPage extends StatefulWidget
 {
-  final Users currentUser;
+  final Users? currentUser;
   const CreateDiaryPage({super.key, required this.currentUser});
 
   @override
@@ -16,6 +17,7 @@ class CreateDiaryPage extends StatefulWidget
 
 class _CreateDiaryPageState extends State<CreateDiaryPage>{
 
+  GlobalKey globalKey = GlobalKey(debugLabel: 'btm_app_bar');
   DatabaseService service = DatabaseService();
   DateTime dateTime = DateTime.now();
 
@@ -29,9 +31,9 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
   @override
   Widget build(BuildContext context) {
 
-    if (widget.currentUser.diaryCategory != null)
+    if (widget.currentUser!.diaryCategory != null)
     {
-      categoryList = List.from(widget.currentUser.diaryCategory as Iterable);
+      categoryList = List.from(widget.currentUser!.diaryCategory as Iterable);
     }
 
     return Scaffold(
@@ -198,13 +200,13 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
                           service.createDiary(
                             Diary(
                               id: diaryId, 
-                              userId: widget.currentUser.id, 
+                              userId: widget.currentUser!.id, 
                               time: dateTime, 
                               category: currentCategory, 
                               title: currentTitle, 
                               content: currentContent)
                           );
-                          service.updateUsersAddDiaryId(widget.currentUser.id!, diaryId);
+                          service.updateUsersAddDiaryId(widget.currentUser!.id!, diaryId);
                         }
                       },
                       style: IconButton.styleFrom(

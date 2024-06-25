@@ -12,28 +12,33 @@ import '../widgets/bottom_navigation_bar.dart';
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
-  Future<void> signInHandle(User firebaseAuthInstanceUser)
+  Future<Users> signInHandle(User firebaseAuthInstanceUser)
   async {
     DatabaseService service = DatabaseService();
-    bool bNotExist = await service.retrieveUsers(firebaseAuthInstanceUser.uid) == null;
-    if (bNotExist) {
-      service.createUser(
-        Users(
-          id: firebaseAuthInstanceUser.uid,
+    Users? retrievedUser = await service.retrieveUsers(firebaseAuthInstanceUser.uid);
+    //bool bNotExist = await service.retrieveUsers(firebaseAuthInstanceUser.uid) == null;
+    if (retrievedUser == null) {
+      Users newUser = Users(
+        id: firebaseAuthInstanceUser.uid,
           username: firebaseAuthInstanceUser.displayName,
           email: firebaseAuthInstanceUser.email,
           diaryCategory: ['學', '職', '情'],
-          diaryId: [])
+          diaryId: []
       );
+      service.createUser(newUser);
+      return newUser;
     }
+    
+    return retrievedUser;
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+      builder: (context, snapshot1) {
+        if (!snapshot1.hasData) {
+          // if not logged in
           return SignInScreen(
             providers: [
               GoogleProvider(clientId: firebaseClientId),
@@ -41,13 +46,20 @@ class AuthGate extends StatelessWidget {
           );
         }
 
-        User? firebaseAuthInstanceUser = FirebaseAuth.instance.currentUser;
-
-        if (firebaseAuthInstanceUser != null) {
-          signInHandle(firebaseAuthInstanceUser);
-        }
-
-        return const MyBottomNavigationBar();
+        // if logged in
+        return FutureBuilder<Users?>(
+// solution for 2 stream: https://stackoverflow.com/questions/51880330/flutter-stream-two-streams-into-a-single-screen
+            future: signInHandle(FirebaseAuth.instance.currentUser!),
+            builder: (context, snapshot2) {
+              if (!snapshot2.hasData)
+              {
+                // user data not retrieved yet, waiting...
+                return const Center(child: CircularProgressIndicator());
+              }
+              // TODO: splash screen
+              return MyBottomNavigationBar(currentUser: snapshot2.data);
+            },
+          );
       },
     );
   }

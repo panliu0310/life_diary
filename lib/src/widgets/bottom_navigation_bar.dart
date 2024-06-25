@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:life_diary/page/create_diary_page.dart';
+import 'package:life_diary/src/schema/users.dart';
 import '../../page/profile_page.dart';
 import '../../page/story_page.dart';
 import '../../page/setting_page.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
-  const MyBottomNavigationBar({super.key});
+  final Users? currentUser;
+  const MyBottomNavigationBar({super.key, required this.currentUser});
 
   @override
   State<MyBottomNavigationBar> createState() =>
@@ -14,11 +17,14 @@ class MyBottomNavigationBar extends StatefulWidget {
 class _MyBottomNavigationBarState
     extends State<MyBottomNavigationBar> {
   int _selectedIndex = 0;
-  List<Widget> _widgetOptions = [
-    StoryPage(),
-    ProfilePage(),
-    SettingPage()
-  ];
+  late Users? currentUser = widget.currentUser;
+  // List<Widget> _widgetOptions = [
+  //   StoryPage(),
+  //   CreateDiaryPage(currentUser: currentUser),
+  //   ProfilePage(),
+  //   SettingPage()
+  // ];
+  GlobalKey globalKey = GlobalKey(debugLabel: 'btm_app_bar');
 
   void _onItemTapped(int index) {
     setState(() {
@@ -28,19 +34,30 @@ class _MyBottomNavigationBarState
 
   @override
   Widget build(BuildContext context) {
+      List<Widget> widgetOptions = [
+      StoryPage(),
+      CreateDiaryPage(currentUser: currentUser),
+      ProfilePage(),
+      SettingPage()
+    ];
     return Scaffold(
       /*appBar: AppBar(
         title: const Text('BottomNavigationBar Sample'),
         backgroundColor: Colors.lightBlue,
       ),*/
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        key: globalKey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
             label: 'Story',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Create Diary',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
