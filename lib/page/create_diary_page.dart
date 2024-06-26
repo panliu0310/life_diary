@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:life_diary/src/schema/diary.dart';
 import 'package:life_diary/src/schema/users.dart';
-import 'package:life_diary/src/widgets/bottom_navigation_bar.dart';
 import 'package:life_diary/utils/database_service.dart';
 
 class CreateDiaryPage extends StatefulWidget
@@ -17,7 +16,6 @@ class CreateDiaryPage extends StatefulWidget
 
 class _CreateDiaryPageState extends State<CreateDiaryPage>{
 
-  GlobalKey globalKey = GlobalKey(debugLabel: 'btm_app_bar');
   DatabaseService service = DatabaseService();
   DateTime dateTime = DateTime.now();
 

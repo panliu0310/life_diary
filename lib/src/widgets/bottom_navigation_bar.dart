@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:life_diary/page/create_diary_page.dart';
+import 'package:life_diary/page/create_page.dart';
 import 'package:life_diary/src/schema/users.dart';
 import '../../page/profile_page.dart';
 import '../../page/story_page.dart';
@@ -36,7 +36,7 @@ class _MyBottomNavigationBarState
   Widget build(BuildContext context) {
       List<Widget> widgetOptions = [
       StoryPage(),
-      CreateDiaryPage(currentUser: currentUser),
+      CreatePage(currentUser: currentUser),
       ProfilePage(),
       SettingPage()
     ];
@@ -57,7 +57,7 @@ class _MyBottomNavigationBarState
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
-            label: 'Create Diary',
+            label: 'Create',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
