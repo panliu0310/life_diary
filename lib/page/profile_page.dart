@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:life_diary/page/create_diary_page.dart';
 import 'package:life_diary/page/view_diary_page.dart';
 import 'package:life_diary/src/widgets/diary_preview.dart';
 import 'package:life_diary/utils/database_service.dart';
@@ -305,15 +304,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           itemBuilder: (context, index) {
                             return InkWell(
 // click effect reference: https://stackoverflow.com/questions/43692923/flutter-container-onpressed
-                                onTap: () {
-                                  print("test");
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CreateDiaryPage(
-                                            currentUser: retrievedUser!)),
-                                  );
-                                },
                                 child: Ink(
                                   color: Colors.lightBlue,
                                   child: Column(
@@ -321,7 +311,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
                                       SizedBox(height: 50),
-                                      Text("Click to create one")
+                                      Text("你還未創建首個世記!")
                                     ],
                                   ),
                                 ));

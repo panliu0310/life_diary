@@ -25,7 +25,7 @@ class Diary {
     return Diary(
       id: data?['id'],
       userId: data?['userId'],
-      time: data?['time'],
+      time: data?['time'].toDate(),
       category: data?['category'],
       title: data?['title'],
       content: data?['content'],

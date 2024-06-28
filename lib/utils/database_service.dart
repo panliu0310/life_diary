@@ -72,4 +72,18 @@ class DatabaseService {
       .doc(diaryData.id);
     await docRef.set(diaryData);
   }
+
+  Future<Diary?> retrieveDiary(String diaryId) async {
+    final ref = _db.collection("diaries").doc(diaryId).withConverter(
+      fromFirestore: Diary.fromFirestore,
+      toFirestore: (Diary diaries, _) => diaries.toFirestore(),
+    );
+    final docSnap = await ref.get();
+    final diary = docSnap.data(); // Convert to Diary object
+    if (diary != null) {
+      return diary;
+    } else {
+      return null;
+    }
+  }
 }

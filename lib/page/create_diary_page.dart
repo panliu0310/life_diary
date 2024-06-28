@@ -28,10 +28,16 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
 
   @override
   Widget build(BuildContext context) {
+    final focusNodeTitle = FocusNode();
+    final focusNodeContent = FocusNode();
 
     if (widget.currentUser!.diaryCategory != null)
     {
       categoryList = List.from(widget.currentUser!.diaryCategory as Iterable);
+      if (categoryList.isNotEmpty)
+      {
+        currentCategory = categoryList[0];
+      }
     }
 
     return Scaffold(
@@ -41,7 +47,13 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
       ),
       body:
         SingleChildScrollView(
-          child: Container(
+// focus out using GestureDetector: https://www.geeksforgeeks.org/how-to-hide-the-keyboard-when-user-tap-out-of-the-textfield-in-flutter/
+          child: GestureDetector( 
+            onTap: () { 
+                focusNodeTitle.unfocus();
+                focusNodeContent.unfocus();
+            }, 
+            child: Container(
             margin: EdgeInsets.all(5),
               padding: EdgeInsets.zero,
               decoration: BoxDecoration(
@@ -100,6 +112,7 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
                         labelText: 'Title',
                         contentPadding: EdgeInsets.all(8),
                       ),
+                      focusNode: focusNodeTitle,
                     ),
                   ),
 
@@ -159,6 +172,7 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
                         labelText: 'Content',
                         contentPadding: EdgeInsets.all(8),
                       ),
+                      focusNode: focusNodeContent,
                     ),
                   ),
 
@@ -222,6 +236,7 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
               ),
           ),
         ),
+      )
     );
   }
 }
