@@ -92,10 +92,31 @@ class _ViewDiaryPageState extends State<ViewDiaryPage>{
 // ListView reference: https://book.flutterchina.club/chapter6/listview.html#_6-3-6-%E5%AE%9E%E4%BE%8B-%E6%97%A0%E9%99%90%E5%8A%A0%E8%BD%BD%E5%88%97%E8%A1%A8
 // Column + Expanded implementation
                       Expanded(
-                        child: ListView.builder(itemBuilder: (BuildContext context, int index) {
-                          return ListTile(title: Text("$index"));
-                        }),
-                      ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black)
+                            ),
+                            child: ListView.builder(
+                              itemCount: 1,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  child: 
+                                    Text(
+                                      retrievedDiary!.content!,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: Colors.black
+                                      ),
+                                    ), 
+                                );
+                              }
+                            ),
+                          )
+                        )
+                      )
                     ]
                   );
                 }
