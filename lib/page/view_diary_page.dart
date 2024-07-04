@@ -78,15 +78,34 @@ class _ViewDiaryPageState extends State<ViewDiaryPage>{
                         ),
                       ),
 
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        child: Text(
-                          retrievedDiary!.category!,
-                          textAlign: TextAlign.start,
-                        style: TextStyle(
-                          color: Colors.black
-                        ),
-                        ),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 36,
+                        child: Row(
+                          crossAxisAlignment:
+                            CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 8,
+                            ),
+                            // text button reference: https://api.flutter.dev/flutter/material/TextButton-class.html
+                            TextButton.icon(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.black,
+                                backgroundColor: Colors.lightBlue,
+                                textStyle:
+                                    const TextStyle(fontSize: 12.0),
+                              ),
+                              onPressed: () {},
+                              icon: Image.asset(
+                                  'assets/images/diary.png',
+                                  width: 18.0),
+                              label: Text(
+                                  retrievedDiary!.category!),
+                            ),
+                          ],
+                        )
                       ),
 
 // ListView reference: https://book.flutterchina.club/chapter6/listview.html#_6-3-6-%E5%AE%9E%E4%BE%8B-%E6%97%A0%E9%99%90%E5%8A%A0%E8%BD%BD%E5%88%97%E8%A1%A8

@@ -27,10 +27,8 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
   String currentContent = "";
 
   @override
-  Widget build(BuildContext context) {
-    final focusNodeTitle = FocusNode();
-    final focusNodeContent = FocusNode();
-
+  void initState() {
+    super.initState();
     if (widget.currentUser!.diaryCategory != null)
     {
       categoryList = List.from(widget.currentUser!.diaryCategory as Iterable);
@@ -39,6 +37,12 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
         currentCategory = categoryList[0];
       }
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final focusNodeTitle = FocusNode();
+    final focusNodeContent = FocusNode();
 
     return Scaffold(
       appBar: AppBar(
