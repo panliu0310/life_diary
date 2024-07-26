@@ -1,12 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:life_diary/page/view_diary_page.dart';
+import 'package:life_diary/src/schema/diary.dart';
 import 'package:life_diary/src/widgets/diary_preview.dart';
 import 'package:life_diary/utils/database_service.dart';
 import 'package:life_diary/src/schema/users.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final Users? currentUser;
+  const ProfilePage({super.key, required this.currentUser});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -14,10 +16,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   DatabaseService service = DatabaseService();
-  Future<Users?>? currentUser;
-  Users? retrievedUser;
+  //Future<Users?>? currentUser;
+  //Users? retrievedUser;
+  //late List<Diary>? DiaryList;
+  Future<Diary?>? tempDiary;
+  Diary? receivedDiary;
 
-  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  //String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  String categoryFilter = "";
 
   @override
   void initState() {
@@ -26,8 +32,22 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _initRetrieval() async {
-    currentUser = service.retrieveUsers(currentUserId);
-    retrievedUser = await service.retrieveUsers(currentUserId);
+    //currentUser = service.retrieveUsers(currentUserId);
+    //retrievedUser = await service.retrieveUsers(currentUserId);
+    fetchDiaryList();
+  }
+
+  Future<List<Diary>> fetchDiaryList() async{
+    List<Diary> diaryList = [];
+
+    for (int i = 0; i < widget.currentUser!.diaryId!.length; i++)
+    {
+      tempDiary = service.retrieveDiary(widget.currentUser!.diaryId![i]);
+      receivedDiary = await service.retrieveDiary(widget.currentUser!.diaryId![i]);
+      diaryList.add(receivedDiary!);
+    }
+    
+    return diaryList;
   }
 
   @override
@@ -59,26 +79,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FutureBuilder(
-                        future: currentUser,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<Users?> snapshot) {
-                          if (snapshot.hasData) {
-                            return Text(retrievedUser!.username!);
-                          } else {
-                            return Text("");
-                          }
-                        }),
-                    FutureBuilder(
-                        future: currentUser,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<Users?> snapshot) {
-                          if (snapshot.hasData) {
-                            return Text(retrievedUser!.email!);
-                          } else {
-                            return Text("");
-                          }
-                        })
+                    Text(widget.currentUser!.username!),
+                    Text(widget.currentUser!.email!),
                   ],
                 ),
               ),
@@ -91,161 +93,117 @@ class _ProfilePageState extends State<ProfilePage> {
               child: SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: FutureBuilder(
-                    future: currentUser,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<Users?> snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                            //physics: NeverScrollableScrollPhysics(),
-                            //itemExtent: 20,
-                            itemExtent: 100.0,
-                            padding: EdgeInsets.all(5.0),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: retrievedUser!.diaryCategory!.length + 1,
-                            itemBuilder: (context, index) {
-                              // if (index == 0)
-                              // {
-                              //   // first item would be "all"
-                              //   return Row(
-                              //     mainAxisAlignment: MainAxisAlignment.center,
-                              //     children: [
-                              //       TextButton.icon(
-                              //         style: TextButton.styleFrom(
-                              //           foregroundColor: Colors.black,
-                              //           backgroundColor: Colors.lightBlue,
-                              //           textStyle: const TextStyle(fontSize: 16.0),
-                              //         ),
-                              //         onPressed: (){
-
-                              //         },
-                              //         icon: Image.asset('assets/images/diary.png', width: 20.0),
-                              //         label: Text("所有"),
-                              //       )
-                              //     ]
-                              //   );
-                              // }
-                              // else
-                              if (index ==
-                                  retrievedUser!.diaryCategory!.length) {
-                                // last item would be "add"
-                                return Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-//                                       TextButton.icon(
-//                                         style: TextButton.styleFrom(
-//                                             foregroundColor: Colors.black,
-//                                             backgroundColor: Colors.lightBlue,
-//                                             textStyle: const TextStyle(fontSize: 16.0),
-//                                             shape: RoundedRectangleBorder(
-//                                               borderRadius: BorderRadius.circular(5),
-//                                             ),
-//                                           ),
-//                                         onPressed: (){
-
-//                                         },
-// // flutter icon list: https://www.fluttericon.cn/
-//                                         icon: Icon(Icons.add),
-//                                         label: Text("test"),
-//                                       )
+                child: 
+                  ListView.builder(
+                    //physics: NeverScrollableScrollPhysics(),
+                    //itemExtent: 20,
+                    itemExtent: 100.0,
+                    padding: EdgeInsets.all(5.0),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.currentUser!.diaryCategory!.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index ==
+                          widget.currentUser!.diaryCategory!.length) {
+                        // last item would be "add"
+                        return 
+                          Row(
+                            crossAxisAlignment:
+                              CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+// flutter icon list: https://www.fluttericon.cn/
 // AlertDialog with form input: https://www.dhiwise.com/post/how-to-create-and-customize-flutter-alert-dialogs
-                                      IconButton(
-                                        onPressed: () {
-                                          String alertDialogCategoryInput = "";
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: const Text('輸入新類別'),
-                                                content: TextField(
-                                                  decoration: InputDecoration(
-                                                      hintText: "輸入新類別以分類世記"),
-                                                  onChanged: (text) {
-                                                    alertDialogCategoryInput =
-                                                        text;
-                                                  },
-                                                ),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    child: const Text('Cancel'),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                  TextButton(
-                                                    child: const Text('Submit'),
-                                                    onPressed: () {
-                                                      // Handle the submit action
-                                                      service.updateUsersAddCategory(
-                                                          currentUserId,
-                                                          alertDialogCategoryInput);
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                        icon: Icon(Icons.add),
-                                        style: IconButton.styleFrom(
-                                          foregroundColor: Colors.black,
-                                          backgroundColor: Colors.lightBlue,
-                                          //textStyle: const TextStyle(fontSize: 16.0),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                        ),
-                                      )
-                                    ]);
-                              } else {
-                                // middle items in database
-                                return Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    // text button reference: https://api.flutter.dev/flutter/material/TextButton-class.html
-                                    TextButton.icon(
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.black,
-                                        backgroundColor: Colors.lightBlue,
-                                        textStyle:
-                                            const TextStyle(fontSize: 16.0),
-                                      ),
-                                      onPressed: () {},
-                                      icon: Image.asset(
-                                          'assets/images/diary.png',
-                                          width: 20.0),
-                                      label: Text(
-                                          retrievedUser!.diaryCategory![index]),
+                          IconButton(
+                            onPressed: () {
+                              String alertDialogCategoryInput = "";
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('輸入新類別'),
+                                    content: TextField(
+                                      decoration: InputDecoration(
+                                          hintText: "輸入新類別以分類世記"),
+                                      onChanged: (text) {
+                                        alertDialogCategoryInput =
+                                            text;
+                                      },
                                     ),
-                                  ],
-                                );
-                              }
-                            });
-                      } else {
-                        return Text("");
-                      }
-                    }),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: const Text('Submit'),
+                                        onPressed: () {
+                                          // Handle the submit action
+                                          service.updateUsersAddCategory(
+                                              widget.currentUser!.id!,
+                                              alertDialogCategoryInput);
+                                          Navigator.of(context)
+                                              .pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: Icon(Icons.add),
+                            style: IconButton.styleFrom(
+                              foregroundColor: Colors.black,
+                              backgroundColor: Colors.lightBlue,
+                              //textStyle: const TextStyle(fontSize: 16.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(5),
+                              ),
+                            ),
+                          )
+                        ]);
+                  } else {
+                    // middle items in database
+                    return Row(
+                      crossAxisAlignment:
+                          CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // text button reference: https://api.flutter.dev/flutter/material/TextButton-class.html
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.lightBlue,
+                            textStyle:
+                                const TextStyle(fontSize: 16.0),
+                          ),
+                          onPressed: () {},
+                          icon: Image.asset(
+                              'assets/images/diary.png',
+                              width: 20.0),
+                          label: Text(
+                              widget.currentUser!.diaryCategory![index]),
+                        ),
+                      ],
+                    );
+                  }
+                })
               ),
             ),
           ),
 
 // UI reference: https://stackoverflow.com/questions/58117777/how-to-add-vertical-and-horizontal-line-around-flutter-grid-view
           Expanded(
-              child: FutureBuilder(
-                  future: currentUser,
+              child: FutureBuilder<List<Diary>>(
+                  future: fetchDiaryList(),
                   builder:
-                      (BuildContext context, AsyncSnapshot<Users?> snapshot) {
+                      (BuildContext context, AsyncSnapshot<List<Diary>?> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done &&
                         snapshot.hasData &&
-                        retrievedUser!.diaryId!.isNotEmpty) {
+                        snapshot.data!.isNotEmpty) {
                       return GridView.builder(
                           //physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -256,7 +214,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             crossAxisCount: 3,
                           ),
                           
-                          itemCount: retrievedUser!.diaryId!.length,
+                          itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             return InkWell(
 // click effect reference: https://stackoverflow.com/questions/43692923/flutter-container-onpressed
@@ -265,8 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => ViewDiaryPage(
-                                            currentDiaryId: retrievedUser!
-                                                .diaryId![index])),
+                                            currentDiaryId: snapshot.data![index].id!)),
                                   );
                                 },
                                 child: Ink(
@@ -280,8 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         width: MediaQuery.of(context).size.width / 3,
                                         height: (MediaQuery.of(context).size.width - 5/*buffer*/) / 3,
                                         child: DiaryPreview(
-                                            diaryId:
-                                                retrievedUser!.diaryId![index]),
+                                            diaryId: snapshot.data![index].id!),
                                       )
                                     ],
                                   ),
@@ -290,7 +246,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     } else if (snapshot.connectionState ==
                             ConnectionState.done &&
                         snapshot.hasData &&
-                        retrievedUser!.diaryId!.isEmpty) {
+                        snapshot.data!.isEmpty) {
                       return GridView.builder(
                           //physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -320,6 +276,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       return const Center(child: CircularProgressIndicator());
                     }
                   }))
+        
         ],
       ),
     );

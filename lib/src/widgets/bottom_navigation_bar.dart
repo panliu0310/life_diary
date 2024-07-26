@@ -37,7 +37,7 @@ class _MyBottomNavigationBarState
       List<Widget> widgetOptions = [
       StoryPage(),
       CreatePage(currentUser: currentUser),
-      ProfilePage(),
+      ProfilePage(currentUser: currentUser),
       SettingPage()
     ];
     return Scaffold(
