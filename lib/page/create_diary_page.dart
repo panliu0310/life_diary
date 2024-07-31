@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:life_diary/src/schema/diary.dart';
-import 'package:life_diary/src/schema/users.dart';
 import 'package:life_diary/utils/database_service.dart';
+
+import '../src/widgets/globals.dart' as globals;
 
 class CreateDiaryPage extends StatefulWidget
 {
-  final Users? currentUser;
-  const CreateDiaryPage({super.key, required this.currentUser});
+  const CreateDiaryPage({super.key});
 
   @override
   State<CreateDiaryPage> createState() => _CreateDiaryPageState();
@@ -29,9 +29,9 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
   @override
   void initState() {
     super.initState();
-    if (widget.currentUser!.diaryCategory != null)
+    if (globals.currentUser!.diaryCategory != null)
     {
-      categoryList = List.from(widget.currentUser!.diaryCategory as Iterable);
+      categoryList = List.from(globals.currentUser!.diaryCategory as Iterable);
       if (categoryList.isNotEmpty)
       {
         currentCategory = categoryList[0];
@@ -216,13 +216,13 @@ class _CreateDiaryPageState extends State<CreateDiaryPage>{
                           service.createDiary(
                             Diary(
                               id: diaryId, 
-                              userId: widget.currentUser!.id, 
+                              userId: globals.currentUser!.id, 
                               time: dateTime, 
                               category: currentCategory, 
                               title: currentTitle, 
                               content: currentContent)
                           );
-                          service.updateUsersAddDiaryId(widget.currentUser!.id!, diaryId);
+                          service.updateUsersAddDiaryId(globals.currentUser!.id!, diaryId);
                         }
                       },
                       style: IconButton.styleFrom(

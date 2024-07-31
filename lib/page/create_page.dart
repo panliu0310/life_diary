@@ -1,12 +1,10 @@
 // route reference: https://docs.flutter.dev/cookbook/navigation/navigation-basics
 import 'package:flutter/material.dart';
 import 'package:life_diary/page/create_diary_page.dart';
-import 'package:life_diary/src/schema/users.dart';
 
 class CreatePage extends StatefulWidget
 {
-  final Users? currentUser;
-  const CreatePage({super.key, required this.currentUser});
+  const CreatePage({super.key});
 
   @override
   State<CreatePage> createState() => _CreatePageState();
@@ -40,8 +38,7 @@ class _CreatePageState extends State<CreatePage>{
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CreateDiaryPage(
-                                  currentUser: widget.currentUser)),
+                              builder: (context) => CreateDiaryPage()),
                         );
                       },
                       style: IconButton.styleFrom(
@@ -63,8 +60,7 @@ class _CreatePageState extends State<CreatePage>{
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CreateDiaryPage(
-                                  currentUser: widget.currentUser)),
+                              builder: (context) => CreateDiaryPage()),
                         );
                       },
                       style: IconButton.styleFrom(

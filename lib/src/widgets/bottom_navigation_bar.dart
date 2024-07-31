@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:life_diary/page/create_page.dart';
-import 'package:life_diary/src/schema/users.dart';
 import '../../page/profile_page.dart';
 import '../../page/story_page.dart';
 import '../../page/setting_page.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
-  final Users? currentUser;
-  const MyBottomNavigationBar({super.key, required this.currentUser});
+  const MyBottomNavigationBar({super.key});
 
   @override
   State<MyBottomNavigationBar> createState() =>
@@ -17,7 +15,6 @@ class MyBottomNavigationBar extends StatefulWidget {
 class _MyBottomNavigationBarState
     extends State<MyBottomNavigationBar> {
   int _selectedIndex = 0;
-  late Users? currentUser = widget.currentUser;
   // List<Widget> _widgetOptions = [
   //   StoryPage(),
   //   CreateDiaryPage(currentUser: currentUser),
@@ -36,8 +33,8 @@ class _MyBottomNavigationBarState
   Widget build(BuildContext context) {
       List<Widget> widgetOptions = [
       StoryPage(),
-      CreatePage(currentUser: currentUser),
-      ProfilePage(currentUser: currentUser),
+      CreatePage(),
+      ProfilePage(),
       SettingPage()
     ];
     return Scaffold(

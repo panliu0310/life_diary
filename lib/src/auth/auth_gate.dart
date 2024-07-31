@@ -9,6 +9,8 @@ import 'package:life_diary/utils/database_service.dart';
 
 import '../widgets/bottom_navigation_bar.dart';
 
+import '../widgets/globals.dart' as globals;
+
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
@@ -57,7 +59,8 @@ class AuthGate extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               }
               // TODO: splash screen
-              return MyBottomNavigationBar(currentUser: snapshot2.data);
+              globals.currentUser = snapshot2.data;
+              return MyBottomNavigationBar();
             },
           );
       },
